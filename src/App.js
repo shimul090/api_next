@@ -8,10 +8,14 @@ import Grid from '@mui/material/Grid';
 import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
 
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+
 function App() {
     const [productList, setProductList] = useState([]);
     const [prodDetails, setProdDetails] = useState(null);
     const [sortOrder, setSortOrder] = useState("asc");
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -48,7 +52,8 @@ function App() {
 
 
     function showProductList() {
-        setProdDetails(null)
+        setProdDetails(null);
+        navigate("/");
     }
 
     function getDetails(id) {
@@ -56,15 +61,17 @@ function App() {
             .then(res=>res.json())
             .then(json=>{setProdDetails(json);
             });
+        navigate(`/product-details/${id}`);
     }
 
     return(
-        <>
-        {
-            prodDetails ? (<ProductDetails prodDetails={prodDetails} showProductList={showProductList} />) : 
-            (<ProductList productList={productList} getDetails={getDetails} setSortOrder={setSortOrder} addItem={addItem} deleteItem={deleteItem} />)
-        }
-        </>
+        <Routes>
+            {
+                prodDetails ? ( <Route path="/product-details/:id" element={<ProductDetails prodDetails={prodDetails} showProductList={showProductList} />} /> ) :
+                <Route path="/" element={<ProductList productList={productList} getDetails={getDetails} setSortOrder={setSortOrder} addItem={addItem} deleteItem={deleteItem} />} />
+            }
+            <Route path="*" element={<>404 page not found</>} />
+         </Routes>
     );
 }
 
