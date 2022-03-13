@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 
 import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
+import Error from './components/Error';
 
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
@@ -70,7 +71,7 @@ function App() {
                 prodDetails ? ( <Route path="/product-details/:id" element={<ProductDetails prodDetails={prodDetails} showProductList={showProductList} />} /> ) :
                 <Route path="/" element={<ProductList productList={productList} getDetails={getDetails} setSortOrder={setSortOrder} addItem={addItem} deleteItem={deleteItem} />} />
             }
-            <Route path="*" element={<>404 page not found</>} />
+            <Route path="*" element={<Error />} />
          </Routes>
     );
 }
